@@ -1,0 +1,25 @@
+{
+  "id": "/admin",
+  "name": "Admin Kopiluwak Lereng Muria",
+  "short_name": "Admin Kopi",
+  "description": "Panel admin Kopiluwak: pesanan, produk, stok, refund, dan laporan dari HP.",
+  "lang": "id",
+  "dir": "ltr",
+  "start_url": "/admin?source=pwa",
+  "scope": "/admin",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#2A160B",
+  "theme_color": "#2A160B",
+  "categories": ["business", "productivity"],
+  "icons": [
+    { "src": "/icons/admin-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
+    { "src": "/icons/admin-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
+    { "src": "/icons/admin-maskable-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ],
+  "shortcuts": [
+    { "name": "Pesanan", "url": "/admin/pesanan?source=shortcut", "icons": [{ "src": "/icons/admin-192.png", "sizes": "192x192" }] },
+    { "name": "Refund", "url": "/admin/refund?source=shortcut", "icons": [{ "src": "/icons/admin-192.png", "sizes": "192x192" }] },
+    { "name": "Stok", "url": "/admin/stok?source=shortcut", "icons": [{ "src": "/icons/admin-192.png", "sizes": "192x192" }] }
+  ]
+}

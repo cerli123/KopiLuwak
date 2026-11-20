@@ -1,0 +1,39 @@
+# =============================================================================
+#  SETINGAN MIDTRANS SANDBOX - Kopiluwak Lereng Muria
+#  Cara pakai: buka file .env, GANTI blok "Midtrans" yang lama dengan blok di bawah ini.
+#  Setelah menyimpan .env jalankan:   php artisan config:clear
+# =============================================================================
+
+# ---------- Midtrans (SANDBOX / uji coba, tanpa uang sungguhan) ----------
+# Ambil key di: https://dashboard.sandbox.midtrans.com  >  Settings  >  Access Keys
+# (pastikan pojok kiri atas dashboard bertuliskan "Sandbox", bukan "Production")
+MIDTRANS_SERVER_KEY=SB-Mid-server-ISI_SERVER_KEY_SANDBOX_ANDA
+MIDTRANS_CLIENT_KEY=SB-Mid-client-ISI_CLIENT_KEY_SANDBOX_ANDA
+MIDTRANS_IS_PRODUCTION=false
+
+# Aturan penting:
+# 1. Tanpa spasi, tanpa tanda kutip, satu baris per key.
+# 2. Server Key & Client Key harus sama-sama dari Sandbox (diawali SB-).
+# 3. Pembayaran selalu lewat jendela Midtrans Snap. Mode simulasi sudah dihapus.
+
+# ---------- (Opsional) Pencarian alamat dari peta ----------
+# Dipakai saat pelanggan klik peta di checkout. Isi dengan email Anda supaya
+# OpenStreetMap bisa menghubungi bila ada masalah. Boleh dibiarkan kosong.
+# NOMINATIM_USER_AGENT="KopiluwakLerengMuria/1.0 (emailanda@gmail.com)"
+
+# ---------- Untuk lokal (Laragon/XAMPP) ----------
+APP_ENV=local
+APP_DEBUG=true
+APP_URL=http://localhost:8000
+
+# =============================================================================
+#  KARTU UJI SANDBOX
+#  Kartu sukses : 4811 1111 1111 1114   | Exp: bulan/tahun bebas di masa depan | CVV: 123 | OTP/3DS: 112233
+#  Kartu ditolak: 4911 1111 1111 1113
+#  Virtual Account / QRIS / GoPay / Minimarket: bayar lewat https://simulator.sandbox.midtrans.com
+#
+#  WEBHOOK (opsional di lokal): Midtrans Sandbox > Settings > Configuration >
+#  Payment Notification URL  ->  https://DOMAIN-ANDA/midtrans/notifikasi
+#  localhost tidak bisa dijangkau Midtrans; pakai ngrok / Cloudflare Tunnel bila ingin webhook.
+#  Tanpa webhook, status pesanan tetap diperbarui otomatis saat pelanggan kembali dari jendela bayar.
+# =============================================================================
