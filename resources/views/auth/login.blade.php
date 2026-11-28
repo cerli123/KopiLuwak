@@ -84,12 +84,6 @@
 
                 <p class="auth-link" style="margin-top:22px;">Belum punya akun? <a href="{{ route('register') }}">Daftar sekarang</a></p>
 
-                {{-- <div class="auth-demo">
-                    <p class="auth-demo-title"><i class="fa-solid fa-key"></i>Akun demo</p>
-                    <p>Admin: <code>admin@kopiluwak.id</code> / <code>password</code></p>
-                    <p>User: <code>user@kopiluwak.id</code> / <code>password</code></p>
-                </div> --}}
-
                 <a href="{{ route('landing') }}" class="auth-back">
                     <i class="fa-solid fa-arrow-left"></i>Kembali ke beranda
                 </a>

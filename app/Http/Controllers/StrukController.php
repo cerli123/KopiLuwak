@@ -8,16 +8,8 @@ use App\Services\MidtransService;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Support\Facades\Auth;
 
-/**
- * Struk pembayaran (bukti bayar) untuk pesanan yang sudah LUNAS.
- *
- * - Pelanggan hanya boleh melihat struk pesanannya sendiri.
- * - Admin boleh melihat struk semua pesanan.
- * - Struk hanya tersedia bila pembayaran sudah dikonfirmasi.
- */
 class StrukController extends Controller
 {
-    /** Tampilan struk di browser (siap cetak / thermal 80mm). */
     public function show(Pesanan $pesanan, MidtransService $midtrans)
     {
         $data = $this->siapkan($pesanan, $midtrans);
@@ -29,7 +21,6 @@ class StrukController extends Controller
         return view('struk.show', $data);
     }
 
-    /** Unduh struk sebagai PDF (kertas 80mm). */
     public function pdf(Pesanan $pesanan, MidtransService $midtrans)
     {
         $data = $this->siapkan($pesanan, $midtrans);
@@ -44,11 +35,6 @@ class StrukController extends Controller
         return $pdf->download('struk-' . $pesanan->kode_pesanan . '.pdf');
     }
 
-    /**
-     * Cek hak akses & kelayakan struk, lalu kumpulkan semua data yang dibutuhkan view.
-     *
-     * @return array|\Illuminate\Http\RedirectResponse
-     */
     private function siapkan(Pesanan $pesanan, MidtransService $midtrans)
     {
         $user    = Auth::user();
@@ -56,7 +42,6 @@ class StrukController extends Controller
 
         abort_unless($isAdmin || $pesanan->user_id === $user->id, 403);
 
-        // Pelanggan: pastikan status pembayaran sudah disinkronkan dengan Midtrans.
         if (! $isAdmin) {
             $pesanan = $midtrans->sinkron($pesanan);
         }
@@ -73,7 +58,6 @@ class StrukController extends Controller
             return redirect($tujuan)->with('error', 'Struk hanya tersedia untuk pesanan yang sudah dibayar.');
         }
 
-        // Cap pada struk bila pesanan dibatalkan / dana dikembalikan.
         $stempel = null;
         if ($pesanan->refund && $pesanan->refund->status === 'selesai') {
             $stempel = 'DIREFUND';
@@ -103,9 +87,6 @@ class StrukController extends Controller
         ];
     }
 
-    /**
-     * Tinggi kertas PDF (pt). Dibuat sedikit longgar agar struk selalu 1 halaman.
-     */
     private function perkirakanTinggi(array $data): float
     {
         $tinggi = 430;

@@ -12,14 +12,6 @@ use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Str;
 use Laravel\Socialite\Facades\Socialite;
 
-/**
- * Masuk / daftar dengan akun Google (Gmail asli).
- *
- * Alur: /auth/google -> halaman persetujuan Google -> /auth/google/callback.
- * - Akun yang sudah punya google_id langsung dimasukkan.
- * - Bila email Google sama dengan akun lama, akun itu otomatis dihubungkan.
- * - Bila belum ada, akun pelanggan baru dibuat (tanpa password; bisa diatur di halaman Profil).
- */
 class GoogleController extends Controller
 {
     public function redirect()
@@ -53,7 +45,6 @@ class GoogleController extends Controller
             return redirect()->route('login')->with('error', 'Akun Google Anda tidak menyediakan alamat email.');
         }
 
-        // Hanya terima email yang sudah diverifikasi Google (mencegah pengambilalihan akun).
         $raw = (array) ($google->user ?? []);
         if (array_key_exists('email_verified', $raw) && ! filter_var($raw['email_verified'], FILTER_VALIDATE_BOOL)) {
             return redirect()->route('login')->with('error', 'Email Google Anda belum terverifikasi.');
@@ -65,7 +56,6 @@ class GoogleController extends Controller
             $user = User::where('email', $email)->first();
 
             if ($user) {
-                // Hubungkan akun lama dengan Google.
                 $user->forceFill([
                     'google_id' => $google->getId(),
                     'avatar'    => $user->avatar ?: $google->getAvatar(),
@@ -74,7 +64,7 @@ class GoogleController extends Controller
                 $user = User::create([
                     'nama'           => $google->getName() ?: Str::before($email, '@'),
                     'email'          => $email,
-                    'password'       => Str::random(40),   // di-hash otomatis oleh cast 'hashed'
+                    'password'       => Str::random(40),
                     'role'           => 'user',
                     'google_id'      => $google->getId(),
                     'avatar'         => $google->getAvatar(),
@@ -96,10 +86,8 @@ class GoogleController extends Controller
 
     private function driver()
     {
-        /** @var \Laravel\Socialite\Two\GoogleProvider $driver */
         $driver = Socialite::driver('google');
 
-        // Di Windows (Laragon/XAMPP) tanpa curl.cainfo, pakai bundel CA bawaan proyek.
         return $driver->setHttpClient(new Client(['verify' => CaBundle::verify()]));
     }
 }

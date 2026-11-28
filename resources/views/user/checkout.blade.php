@@ -6,7 +6,7 @@
 @endpush
 
 @section('content')
-    <div class="page-wrap page-md">
+    <div class="page-wrap page-md has-bar">
         <h2 class="page-title">Checkout</h2>
 
         <div class="step-bar">
@@ -48,18 +48,18 @@
                     <div class="card" style="margin-bottom:16px;">
                         <p class="section-label"><i class="fa-solid fa-user"></i>Data Penerima</p>
                         <div class="form-group">
-                            <label>Nama Penerima <span class="req">*</span></label>
-                            <input type="text" name="nama_penerima"
-                                value="{{ old('nama_penerima', auth()->user()->nama) }}" required>
+                            <label for="nama_penerima">Nama Penerima <span class="req">*</span></label>
+                            <input type="text" name="nama_penerima" id="nama_penerima" autocomplete="name"
+                                autocapitalize="words" value="{{ old('nama_penerima', auth()->user()->nama) }}" required>
                         </div>
                         <div class="form-group">
-                            <label>No. HP <span class="req">*</span></label>
-                            <input type="text" name="no_hp_penerima"
+                            <label for="no_hp_penerima">No. HP <span class="req">*</span></label>
+                            <input type="tel" name="no_hp_penerima" id="no_hp_penerima" inputmode="tel" autocomplete="tel"
                                 value="{{ old('no_hp_penerima', auth()->user()->no_hp) }}" required>
                         </div>
                         <div class="form-group">
                             <label for="alamat_pengiriman">Alamat Lengkap <span class="req">*</span></label>
-                            <textarea name="alamat_pengiriman" id="alamat_pengiriman" rows="3" maxlength="500"
+                            <textarea name="alamat_pengiriman" id="alamat_pengiriman" rows="3" maxlength="500" autocomplete="street-address"
                                 placeholder="Terisi otomatis saat Anda klik / geser pin di peta" required>{{ old('alamat_pengiriman', auth()->user()->alamat) }}</textarea>
                             <p class="form-hint" id="alamat-info"><i class="fa-solid fa-circle-info"></i>Klik peta atau geser pin: nama jalan, desa, kecamatan, dan kota terisi otomatis. Boleh Anda ubah.</p>
                         </div>
@@ -76,7 +76,7 @@
                         <p class="form-hint" style="margin-bottom:12px;">Cari alamat, pakai lokasi Anda, atau klik peta untuk menaruh pin. Ongkir dihitung otomatis dari jarak tempuh.</p>
 
                         <div class="map-search">
-                            <input type="text" id="map-query" placeholder="Cari alamat atau nama tempat">
+                            <input type="search" id="map-query" placeholder="Cari alamat atau nama tempat" enterkeyhint="search" autocomplete="off">
                             <button type="button" class="btn btn-outline btn-sm" id="map-cari">
                                 <i class="fa-solid fa-magnifying-glass"></i>Cari
                             </button>
@@ -117,8 +117,19 @@
                         <button type="submit" id="btn-pesan" class="btn btn-primary btn-full" style="margin-top:16px;" disabled>
                             Buat Pesanan &amp; Bayar <i class="fa-solid fa-arrow-right"></i>
                         </button>
+                        <p class="pay-hint" id="pay-hint"><i class="fa-solid fa-circle-info"></i>Tombol aktif setelah titik pengiriman dipilih di peta.</p>
                     </div>
                 </div>
+            </div>
+
+            <div class="co-bar">
+                <div class="co-bar-total">
+                    <small>Total</small>
+                    <strong id="bar-total">Rp {{ number_format($total, 0, ',', '.') }}</strong>
+                </div>
+                <button type="button" id="btn-pesan-bar" class="btn btn-primary">
+                    <i class="fa-solid fa-location-dot"></i>Pilih lokasi
+                </button>
             </div>
         </form>
     </div>
@@ -146,7 +157,11 @@
             var ongkirEl = document.getElementById('sum-ongkir');
             var totalEl = document.getElementById('sum-total');
             var btnPesan = document.getElementById('btn-pesan');
+            var btnBar = document.getElementById('btn-pesan-bar');
+            var totalBar = document.getElementById('bar-total');
+            var payHint = document.getElementById('pay-hint');
             var btnLokasi = document.getElementById('map-lokasi');
+            var mengirim = false;
 
             var seqHitung = 0;
             var seqAlamat = 0;
@@ -154,6 +169,31 @@
             function rupiah(n) {
                 return 'Rp ' + new Intl.NumberFormat('id-ID').format(n);
             }
+
+            function setTombol(aktif, menunggu) {
+                btnPesan.disabled = !aktif;
+                btnBar.type = aktif ? 'submit' : 'button';
+                btnBar.disabled = !aktif && menunggu === true;
+                payHint.hidden = aktif;
+                if (aktif) {
+                    btnBar.innerHTML = 'Buat Pesanan <i class="fa-solid fa-arrow-right"></i>';
+                } else if (menunggu === true) {
+                    btnBar.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i>Menghitung...';
+                } else {
+                    btnBar.innerHTML = '<i class="fa-solid fa-location-dot"></i>Pilih lokasi';
+                }
+            }
+
+            function setTotal(teks) {
+                totalEl.textContent = teks;
+                totalBar.textContent = teks;
+            }
+
+            btnBar.addEventListener('click', function () {
+                if (btnBar.type === 'button') {
+                    document.getElementById('map').scrollIntoView({ behavior: 'smooth', block: 'center' });
+                }
+            });
 
             function postJson(url, body) {
                 return fetch(url, {
@@ -195,8 +235,8 @@
                 statusEl.classList.add('error');
                 jarakEl.textContent = '-';
                 ongkirEl.textContent = '-';
-                totalEl.textContent = rupiah(subtotal);
-                btnPesan.disabled = true;
+                setTotal(rupiah(subtotal));
+                setTombol(false);
             }
 
             function infoAlamat(html, galat) {
@@ -204,7 +244,6 @@
                 alamatInfo.style.color = galat ? '#b91c1c' : '';
             }
 
-            // Titik peta -> alamat (nama jalan, desa, kecamatan, kota, dst) -> kolom Alamat Lengkap.
             function isiAlamat(lat, lng, cadangan, catatan) {
                 catatan = catatan ? ' ' + catatan : '';
                 var no = ++seqAlamat;
@@ -233,17 +272,17 @@
                 lngInput.value = lng.toFixed(7);
                 statusEl.classList.remove('error');
                 statusEl.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i>Menghitung ongkir...';
-                btnPesan.disabled = true;
+                setTombol(false, true);
 
                 postJson(urlHitung, { lat: lat, lng: lng })
                     .then(function (d) {
                         if (no !== seqHitung) return;
                         jarakEl.textContent = d.jarak_km + ' km';
                         ongkirEl.textContent = rupiah(d.ongkir);
-                        totalEl.textContent = rupiah(d.total);
+                        setTotal(rupiah(d.total));
                         statusEl.innerHTML = '<i class="fa-solid fa-circle-check"></i>Jarak tempuh ' + d.jarak_km + ' km'
                             + (d.sumber === 'estimasi' ? ' (estimasi)' : '') + ', ongkir ' + rupiah(d.ongkir) + '.';
-                        btnPesan.disabled = false;
+                        setTombol(true);
                     })
                     .catch(function (err) {
                         if (no !== seqHitung) return;
@@ -251,11 +290,6 @@
                     });
             }
 
-            /**
-             * opsi.geser     : pindahkan tampilan peta ke titik
-             * opsi.alamat    : false = jangan timpa kolom alamat (dipakai saat memulihkan input lama)
-             * opsi.cadangan  : alamat dari hasil pencarian, dipakai bila pengambilan alamat gagal
-             */
             function setTujuan(lat, lng, opsi) {
                 opsi = opsi || {};
 
@@ -308,7 +342,6 @@
                 }
             });
 
-            // "Lokasi Saya": browser meminta izin -> lokasi dicari otomatis -> pin, ongkir, dan Alamat Lengkap terisi sendiri (tanpa tombol Cari).
             function lokasiGagal(err) {
                 btnLokasi.disabled = false;
                 tampilkanGagal({
@@ -344,7 +377,6 @@
                 statusEl.classList.remove('error');
                 statusEl.innerHTML = '<i class="fa-solid fa-location-crosshairs fa-beat"></i>Aktifkan lokasi: pilih <strong>"Izinkan"</strong> pada jendela yang muncul di browser...';
 
-                // Coba GPS / akurasi tinggi dulu; bila gagal (bukan karena ditolak), coba lokasi jaringan.
                 navigator.geolocation.getCurrentPosition(lokasiBerhasil, function (err) {
                     if (err.code === 1) {
                         lokasiGagal(err);
@@ -356,16 +388,30 @@
                 }, { enableHighAccuracy: true, timeout: 12000, maximumAge: 0 });
             });
 
-            // Form dikirim ulang karena validasi gagal: pulihkan pin, jangan timpa alamat yang sudah diketik.
             if (oldLat && oldLng) {
                 setTujuan(parseFloat(oldLat), parseFloat(oldLng), { geser: true, alamat: false });
             }
 
-            // Cegah kirim tanpa titik di peta.
             document.getElementById('checkout-form').addEventListener('submit', function (e) {
                 if (!latInput.value || !lngInput.value) {
                     e.preventDefault();
                     tampilkanGagal('Tentukan lokasi pengiriman pada peta terlebih dahulu.');
+                    return;
+                }
+                if (mengirim) {
+                    e.preventDefault();
+                    return;
+                }
+                mengirim = true;
+                btnPesan.disabled = true;
+                btnPesan.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i>Memproses...';
+                btnBar.disabled = true;
+                btnBar.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i>Memproses...';
+            });
+
+            window.addEventListener('pageshow', function (e) {
+                if (e.persisted) {
+                    location.reload();
                 }
             });
         })();

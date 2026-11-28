@@ -1,7 +1,4 @@
 ---
-# Dijalankan cPanel saat klik "Deploy HEAD Commit" (Git Version Control).
-# GANTI "CPUSER" dengan username cPanel Anda (di semua baris).
-# Jika "composer" tidak dikenali: ganti dengan /opt/cpanel/composer/bin/composer
 deployment:
   tasks:
     - cd /home/smkwikr3/kopiluwak-app && composer install --no-dev --optimize-autoloader --no-interaction

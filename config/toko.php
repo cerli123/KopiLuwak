@@ -16,10 +16,8 @@ return [
         'faktor_jalan' => (float) env('ONGKIR_FAKTOR_JALAN', 1.3),
     ],
 
-    // Pencarian alamat & "klik peta -> alamat" (OpenStreetMap Nominatim, dipanggil lewat server).
     'geocoding' => [
         'url'        => env('NOMINATIM_URL', 'https://nominatim.openstreetmap.org'),
-        // Nominatim mewajibkan User-Agent yang jelas. Boleh diganti lewat NOMINATIM_USER_AGENT di .env.
         'user_agent' => env('NOMINATIM_USER_AGENT', 'KopiluwakLerengMuria/1.0 (' . env('MAIL_FROM_ADDRESS', 'admin@kopiluwak.id') . ')'),
     ],
 
@@ -30,10 +28,8 @@ return [
     ],
 
     'refund' => [
-        // Batas hari pengajuan refund (dihitung dari tanggal bayar, atau dari pesanan selesai).
         'batas_hari' => (int) env('REFUND_BATAS_HARI', 7),
 
-        // Pilihan alasan yang tampil di form pelanggan.
         'alasan' => [
             'produk_rusak'        => 'Produk rusak / pecah saat diterima',
             'produk_tidak_sesuai' => 'Produk tidak sesuai pesanan',
@@ -45,7 +41,6 @@ return [
             'lainnya'             => 'Alasan lainnya',
         ],
 
-        // Alasan yang wajib disertai foto bukti.
         'wajib_bukti' => [
             'produk_rusak',
             'produk_tidak_sesuai',
@@ -56,9 +51,7 @@ return [
     ],
 
     'ulasan' => [
-        // Status pesanan yang boleh memberi ulasan (pisahkan koma di .env). Bawaan: hanya pesanan yang sudah selesai.
         'status_boleh' => array_values(array_filter(array_map('trim', explode(',', (string) env('ULASAN_STATUS_BOLEH', 'selesai'))))),
-        // Ulasan baru langsung tampil. Isi false bila ingin admin menyetujui dulu (ULASAN_LANGSUNG_TAMPIL=false).
         'langsung_tampil' => filter_var(env('ULASAN_LANGSUNG_TAMPIL', true), FILTER_VALIDATE_BOOL),
         'maks_karakter'   => 1000,
     ],

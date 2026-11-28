@@ -68,7 +68,6 @@ class PesananController extends Controller
 
         $subtotal = $items->sum(fn ($i) => $i->subtotal());
 
-        // Alamat dari peta + detail tambahan pelanggan (no. rumah, RT/RW, patokan).
         $alamat = trim(($request->filled('detail_alamat') ? trim($request->detail_alamat) . ', ' : '') . trim($request->alamat_pengiriman));
         $alamat = Str::limit($alamat, 700, '');
 
@@ -113,7 +112,6 @@ class PesananController extends Controller
         } catch (\Throwable $e) {
             Log::error('Gagal membuat token Midtrans: ' . $e->getMessage());
 
-            // Pesanan sudah tersimpan; halaman pembayaran akan mencoba membuat sesi pembayaran lagi.
             return redirect()->route('pembayaran.form', $pesanan);
         }
 

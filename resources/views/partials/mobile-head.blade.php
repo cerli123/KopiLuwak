@@ -1,4 +1,3 @@
-{{-- Tambahan <head> untuk versi HP / Android (PWA). Letakkan SETELAH @include('partials.assets') --}}
 @php $mAdminArea = request()->is('admin') || request()->is('admin/*'); @endphp
 <meta name="theme-color" content="{{ $mAdminArea ? '#2A160B' : '#1A0E07' }}">
 <meta name="mobile-web-app-capable" content="yes">

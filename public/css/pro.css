@@ -1,7 +1,3 @@
-/* ==========================================================================
-   pro.css — penyempurnaan tampilan (dimuat setelah app.css)
-   ========================================================================== */
-
 html { scroll-behavior: smooth; scroll-padding-top: 84px; }
 :focus-visible { outline: 3px solid rgba(217, 165, 102, .65); outline-offset: 2px; }
 ::selection { background: rgba(217, 165, 102, .35); }
@@ -11,7 +7,6 @@ img { height: auto; }
 .btn:active { transform: translateY(0); }
 .card { transition: box-shadow .2s; }
 
-/* ---------- Sidebar admin ---------- */
 .admin-shell { grid-template-columns: 264px 1fr; }
 .sidebar { border-right: 1px solid rgba(255, 255, 255, .05); scrollbar-width: thin; scrollbar-color: rgba(255, 255, 255, .18) transparent; }
 .sidebar-header { padding: 18px 20px; position: sticky; top: 0; z-index: 2; background: var(--brown-800); }
@@ -33,7 +28,6 @@ img { height: auto; }
 .topbar-actions { display: flex; align-items: center; gap: 14px; }
 .topbar-landing i { margin-right: 6px; }
 
-/* ---------- Galeri (publik) ---------- */
 .galeri-filter { justify-content: center; margin-bottom: 32px; }
 .galeri-tag { position: absolute; top: 10px; left: 10px; padding: 3px 10px; border-radius: 99px; font-size: 11px; font-weight: 600; letter-spacing: .3px; color: var(--brown-900); background: rgba(251, 247, 241, .92); backdrop-filter: blur(4px); }
 .galeri-item { transition: box-shadow .25s, transform .25s; }
@@ -42,7 +36,6 @@ img { height: auto; }
 .galeri-item:hover { box-shadow: var(--shadow-md); transform: translateY(-2px); }
 .galeri-sekilas { columns: 3 260px; column-gap: 18px; }
 
-/* Lightbox + navigasi */
 .lightbox figcaption { display: grid; gap: 4px; margin-top: 14px; }
 .lightbox figcaption strong { color: var(--white); font-size: 16px; }
 .lightbox figcaption span { color: rgba(255, 255, 255, .72); font-size: 14px; max-width: 640px; margin: 0 auto; }
@@ -56,7 +49,6 @@ img { height: auto; }
 .lightbox-close { display: inline-flex; align-items: center; justify-content: center; width: 38px; height: 38px; padding: 0; font-size: 15px; z-index: 3; }
 .lightbox-nav[hidden] { display: none; }
 
-/* ---------- Galeri (admin) ---------- */
 .galeri-admin-grid { grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); }
 .galeri-admin-thumb { position: relative; }
 .galeri-admin-thumb img { width: 100%; height: 170px; object-fit: cover; display: block; }
@@ -71,7 +63,6 @@ img { height: auto; }
 .galeri-urutan input { width: 64px; flex: none; }
 .galeri-check input { width: auto; flex: none; }
 
-/* ---------- Landing: Tentang ---------- */
 .about { padding-top: 96px; }
 .about-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 56px; align-items: center; }
 .about-photos { position: relative; padding: 0 0 56px; }
@@ -82,7 +73,6 @@ img { height: auto; }
 .about-list li { display: flex; gap: 10px; align-items: flex-start; color: var(--gray-700); font-weight: 500; }
 .about-list i { color: var(--green-700); margin-top: 5px; }
 
-/* ---------- Landing: Proses ---------- */
 .proses-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 22px; }
 .proses-card h3 { font-size: 17px; color: var(--brown-900); margin: 16px 0 6px; }
 .proses-card p { font-size: 14px; color: var(--gray-500); }
@@ -91,7 +81,6 @@ img { height: auto; }
 .proses-card:hover .proses-img img { transform: scale(1.06); }
 .proses-no { position: absolute; top: 12px; left: 12px; width: 36px; height: 36px; border-radius: 50%; display: grid; place-items: center; font-weight: 800; color: var(--brown-900); background: var(--gold); box-shadow: var(--shadow-md); }
 
-/* ---------- Footer & WhatsApp ---------- */
 .lp-footer-inner { grid-template-columns: 1.6fr 1fr 1fr 1.3fr; }
 .lp-footer-inner:not(:has(> div:nth-child(4))) { grid-template-columns: 1.6fr 1fr 1fr; }
 .footer-info { display: flex; gap: 10px; align-items: flex-start; font-size: 14px; }
@@ -99,7 +88,6 @@ img { height: auto; }
 .wa-float { position: fixed; right: 20px; bottom: 20px; z-index: 90; width: 56px; height: 56px; border-radius: 50%; display: grid; place-items: center; font-size: 30px; color: #fff; background: #25D366; box-shadow: 0 10px 28px rgba(37, 211, 102, .45); transition: transform .2s; }
 .wa-float:hover { transform: scale(1.08); }
 
-/* ---------- Pengaturan: pembayaran ---------- */
 .pay-status-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
 .pay-status { display: flex; align-items: center; gap: 10px; padding: 10px 12px; border-radius: 10px; font-size: 14px; font-weight: 600; }
 .pay-status.ok { background: var(--green-100); color: var(--green-700); }
@@ -110,7 +98,6 @@ img { height: auto; }
 .pay-howto code { background: var(--brown-100); padding: 1px 6px; border-radius: 5px; font-size: 12.5px; }
 .form-card input[readonly] { background: var(--gray-100); cursor: text; }
 
-/* ---------- Responsif ---------- */
 @media (max-width: 960px) {
   .about-grid { grid-template-columns: 1fr; gap: 36px; }
   .about-photos { max-width: 520px; margin: 0 auto; }
@@ -140,9 +127,6 @@ img { height: auto; }
   * { transition-duration: .01ms !important; animation-duration: .01ms !important; }
 }
 
-/* ---------- Pagination (panah halaman) ----------
-   View kopi.blade.php dipakai sebagai pagination bawaan (lihat AppServiceProvider).
-   Ukuran ikon dikunci supaya panah tidak pernah membesar. */
 .pager { display: flex; flex-wrap: wrap; justify-content: center; align-items: center; gap: 6px; }
 .pager-btn { display: inline-flex; align-items: center; justify-content: center; min-width: 38px; height: 38px; padding: 0 12px; border-radius: 10px; border: 1.5px solid var(--gray-200); background: var(--white); color: var(--brown-700); font-size: 14px; font-weight: 600; line-height: 1; text-decoration: none; transition: border-color .15s, background .15s, color .15s; }
 .pager-btn i { font-size: 12px; line-height: 1; }
@@ -154,13 +138,11 @@ a.pager-btn:hover { border-color: var(--brown-500); background: var(--brown-100)
   .pager-btn { min-width: 34px; height: 34px; padding: 0 8px; font-size: 13px; }
 }
 
-/* ---------- Kartu statistik dashboard: polos, tanpa warna ---------- */
 .stat-card, .stat-card.stat-brown, .stat-card.stat-green, .stat-card.stat-yellow, .stat-card.stat-blue {
   background: var(--white); border: 1px solid var(--gray-200); border-left: 1px solid var(--gray-200); box-shadow: none;
 }
 .stat-card .stat-value { color: var(--gray-900); }
 
-/* ---------- Pengaturan ongkir ---------- */
 .ongkir-contoh { margin-top: 14px; border: 1px solid var(--gray-200); border-radius: 10px; overflow: hidden; }
 .ongkir-contoh table { width: 100%; border-collapse: collapse; font-size: 13.5px; }
 .ongkir-contoh th, .ongkir-contoh td { padding: 8px 12px; text-align: left; border-bottom: 1px solid var(--gray-200); }
@@ -171,7 +153,6 @@ a.pager-btn:hover { border-color: var(--brown-500); background: var(--brown-100)
 .input-prefix > input { border-radius: 0 8px 8px 0; flex: 1; min-width: 0; }
 
 
-/* ---------- Login dengan Google ---------- */
 .btn-google {
   display: flex; align-items: center; justify-content: center; gap: 10px; width: 100%;
   padding: 12px 16px; border: 1.5px solid var(--gray-300); border-radius: var(--radius);
@@ -181,7 +162,6 @@ a.pager-btn:hover { border-color: var(--brown-500); background: var(--brown-100)
 .btn-google:hover { background: var(--gray-100); border-color: var(--brown-300); box-shadow: var(--shadow-sm); }
 .profile-avatar { overflow: hidden; }
 
-/* ---------- Bintang rating ---------- */
 .bintang { display: inline-flex; align-items: center; gap: 2px; color: var(--gold); font-size: 15px; line-height: 1; }
 .bintang-kecil { font-size: 12px; }
 .bintang-teks { margin-left: 6px; color: var(--gray-700); font-weight: 700; font-size: 13px; }
@@ -190,7 +170,6 @@ a.pager-btn:hover { border-color: var(--brown-500); background: var(--brown-100)
 .produk-rating { margin: 2px 0 6px; }
 .detail-rating { display: inline-block; margin: 2px 0 8px; text-decoration: none; }
 
-/* Input bintang (klik untuk memilih) */
 .star-input { position: relative; display: inline-flex; flex-direction: row-reverse; gap: 4px; }
 .star-input input { position: absolute; opacity: 0; width: 1px; height: 1px; pointer-events: none; }
 .star-input label { margin: 0; cursor: pointer; font-size: 28px; line-height: 1; color: var(--gray-300); transition: color .12s, transform .12s; }
@@ -200,7 +179,6 @@ a.pager-btn:hover { border-color: var(--brown-500); background: var(--brown-100)
 .star-input label:hover ~ label { color: var(--gold); }
 .star-input input:focus-visible + label { outline: 2px solid var(--brown-500); outline-offset: 2px; border-radius: 4px; }
 
-/* ---------- Bagian ulasan di halaman produk ---------- */
 .ulasan-section { margin-top: 40px; }
 .ulasan-grid { display: grid; grid-template-columns: 280px 1fr; gap: 20px; align-items: start; }
 .ulasan-ringkas { text-align: center; position: sticky; top: 90px; }
@@ -232,7 +210,6 @@ a.pager-btn:hover { border-color: var(--brown-500); background: var(--brown-100)
 .ulasan-pesanan-item:first-of-type { border-top: none; }
 .ulasan-pesanan-item .ulasan-item { margin-top: 8px; margin-bottom: 0; }
 
-/* Admin */
 .ulasan-admin-top { display: flex; justify-content: space-between; gap: 12px; flex-wrap: wrap; }
 .ulasan-admin-aksi { display: flex; gap: 8px; margin-top: 12px; flex-wrap: wrap; }
 

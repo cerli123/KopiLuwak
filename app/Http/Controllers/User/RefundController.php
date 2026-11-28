@@ -13,7 +13,6 @@ use Illuminate\Validation\Rule;
 
 class RefundController extends Controller
 {
-    /** Daftar pengajuan refund milik pelanggan. */
     public function index(Request $request)
     {
         $refunds = Refund::with('pesanan')
@@ -28,7 +27,6 @@ class RefundController extends Controller
         return view('user.refund-index', compact('refunds'));
     }
 
-    /** Form pengajuan refund untuk satu pesanan. */
     public function create(Pesanan $pesanan)
     {
         abort_if($pesanan->user_id !== Auth::id(), 403);
@@ -46,7 +44,6 @@ class RefundController extends Controller
         ]);
     }
 
-    /** Simpan pengajuan refund. */
     public function store(Request $request, Pesanan $pesanan)
     {
         abort_if($pesanan->user_id !== Auth::id(), 403);
@@ -74,7 +71,6 @@ class RefundController extends Controller
 
         try {
             $refund = DB::transaction(function () use ($pesanan, $data, $path) {
-                // Kunci baris pesanan supaya klik ganda tidak membuat dua pengajuan.
                 $p = Pesanan::with(['pembayaran', 'refund'])
                     ->whereKey($pesanan->id)
                     ->lockForUpdate()
@@ -121,7 +117,6 @@ class RefundController extends Controller
             ->with('success', 'Pengajuan refund terkirim. Admin akan meninjau dan memberi keputusan.');
     }
 
-    /** Detail pengajuan refund. */
     public function show(Request $request, Refund $refund)
     {
         abort_if($refund->user_id !== Auth::id(), 403);
@@ -135,7 +130,6 @@ class RefundController extends Controller
         return view('user.refund-detail', compact('refund'));
     }
 
-    /** Pelanggan membatalkan pengajuan selama belum diputuskan admin. */
     public function batal(Request $request, Refund $refund)
     {
         abort_if($refund->user_id !== Auth::id(), 403);

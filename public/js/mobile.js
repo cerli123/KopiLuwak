@@ -1,15 +1,12 @@
-/* KOPILUWAK — Mobile / Android (PWA). Aman dimuat di semua halaman. */
 (function () {
   'use strict';
 
   var doc = document.documentElement;
 
-  /* 1. Deteksi mode aplikasi terpasang */
   if ((window.matchMedia && matchMedia('(display-mode: standalone)').matches) || window.navigator.standalone) {
     doc.classList.add('is-standalone');
   }
 
-  /* 2. Service worker */
   if ('serviceWorker' in navigator && (location.protocol === 'https:' || location.hostname === 'localhost' || location.hostname === '127.0.0.1')) {
     window.addEventListener('load', function () {
       navigator.serviceWorker.register('/sw.js', { scope: '/' }).catch(function () {});
@@ -22,7 +19,6 @@
 
   ready(function () {
 
-    /* 3. Tabel -> kartu: isi data-label dari <th> */
     document.querySelectorAll('table.table').forEach(function (table) {
       if (table.hasAttribute('data-no-cards')) return;
       var heads = Array.prototype.map.call(table.querySelectorAll('thead th'), function (th) {
@@ -45,7 +41,6 @@
       });
     });
 
-    /* 4. Bottom sheet */
     var backdrop = document.querySelector('.m-sheet-backdrop');
     function closeSheets() {
       document.querySelectorAll('.m-sheet.open').forEach(function (s) { s.classList.remove('open'); });
@@ -66,7 +61,6 @@
     document.addEventListener('keydown', function (e) { if (e.key === 'Escape') closeSheets(); });
     document.querySelectorAll('.m-sheet a').forEach(function (a) { a.addEventListener('click', closeSheets); });
 
-    /* Geser ke bawah untuk menutup sheet */
     document.querySelectorAll('.m-sheet').forEach(function (sheet) {
       var startY = 0, dy = 0, dragging = false;
       sheet.addEventListener('touchstart', function (e) {
@@ -85,7 +79,6 @@
       });
     });
 
-    /* 5. Sembunyikan bottom nav saat keyboard terbuka */
     var typing = 'input:not([type=checkbox]):not([type=radio]):not([type=file]):not([type=button]):not([type=submit]), textarea, select';
     document.addEventListener('focusin', function (e) { if (e.target.matches && e.target.matches(typing)) doc.classList.add('kbd-open'); });
     document.addEventListener('focusout', function () { setTimeout(function () {
@@ -93,12 +86,10 @@
       if (!a || !(a.matches && a.matches(typing))) doc.classList.remove('kbd-open');
     }, 60); });
 
-    /* 6. Indikator offline */
     var off = document.querySelector('.m-offline');
     function net() { if (off) off.classList.toggle('show', !navigator.onLine); }
     window.addEventListener('online', net); window.addEventListener('offline', net); net();
 
-    /* 7. Pasang aplikasi (Android / Chrome) */
     var deferred = null;
     var banner = document.querySelector('.m-install');
     var dismissed = false;

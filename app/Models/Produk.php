@@ -30,7 +30,6 @@ class Produk extends Model
         return $this->hasMany(Keranjang::class);
     }
 
-    /** Muat rata-rata rating & jumlah ulasan yang tampil (tanpa N+1 di daftar produk). */
     public function scopeDenganRating($query)
     {
         return $query
@@ -46,7 +45,6 @@ class Produk extends Model
         return url('media/' . ltrim($this->gambar, '/'));
     }
 
-    /** Rata-rata rating (0 bila belum ada ulasan tampil). Memakai hasil withAvg bila sudah dimuat. */
     public function getRataRatingAttribute(): float
     {
         $avg = array_key_exists('ulasans_avg_rating', $this->attributes)

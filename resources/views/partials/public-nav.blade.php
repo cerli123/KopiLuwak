@@ -34,6 +34,9 @@
                 @endguest
             </div>
         </div>
+        @unless (\App\Models\Pengaturan::tokoBuka())
+            <span class="toko-pill toko-pill-tutup lp-nav-tutup"><i class="fa-solid fa-store-slash"></i>Toko Tutup</span>
+        @endunless
         <button type="button" class="lp-toggle" id="lpToggle" aria-label="Menu">
             <i class="fa-solid fa-bars"></i>
         </button>

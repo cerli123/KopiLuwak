@@ -7,7 +7,6 @@ use Illuminate\Support\Facades\Schema;
 return new class extends Migration {
     public function up(): void
     {
-        // Aman dijalankan ulang: tiap kolom hanya ditambah bila belum ada.
         Schema::table('galeris', function (Blueprint $table) {
             if (! Schema::hasColumn('galeris', 'deskripsi')) {
                 $table->text('deskripsi')->nullable()->after('judul');

@@ -31,7 +31,6 @@ class KeranjangController extends Controller
             ['qty' => 0]
         );
 
-        // Jumlah di keranjang tidak boleh melebihi stok yang tersedia.
         if ((int) $item->qty + (int) $request->qty > $produk->stok->jumlah) {
             if ((int) $item->qty === 0) {
                 $item->delete();

@@ -1,11 +1,5 @@
-/* ===================================================
-KOPILUWAK — UI Add-on (icon, logo, landing, auth, pagination)
-Dimuat SETELAH app.css
-=================================================== */
-
 :root { --gold: #E8C39A; --ease: cubic-bezier(.2,.7,.2,1); }
 
-/* ── ICON HELPERS ── */
 .fa-solid, .fa-regular, .fa-brands { line-height: 1; }
 .btn i, .chip i, .nav-link i, .back-link i { margin-right: 6px; }
 .btn i.ico-right, .back-link i.ico-right { margin: 0 0 0 6px; }
@@ -15,7 +9,6 @@ display: inline-flex; align-items: center; justify-content: center;
 background: var(--brown-100); color: var(--brown-700);
 }
 
-/* ── LOGO / BRAND ── */
 .brand, .sidebar-brand { display: inline-flex; align-items: center; gap: 10px; }
 .brand-logo { width: 38px; height: 38px; flex-shrink: 0; border-radius: 100%; }
 .brand-text { line-height: 1.1; }
@@ -25,7 +18,6 @@ letter-spacing: 2px; text-transform: uppercase; color: rgba(255,255,255,.55); ma
 }
 .sidebar-brand .brand-logo { width: 34px; height: 34px; }
 
-/* ── PLACEHOLDER GAMBAR (pakai icon) ── */
 .produk-placeholder, .detail-placeholder, .cart-img .ph, .ph-box {
 display: flex; align-items: center; justify-content: center;
 color: rgba(61,31,13,.55);
@@ -38,16 +30,13 @@ color: rgba(61,31,13,.55);
 display: inline-flex; align-items: center; justify-content: center; font-size: 16px; flex-shrink: 0; }
 .step-circle i { font-size: 12px; }
 
-/* ── ADMIN SIDEBAR ICON ── */
 .sidebar-link { display: flex; align-items: center; gap: 10px; }
 .sidebar-link i { width: 18px; text-align: center; opacity: .85; }
 .sidebar-link .nav-badge { margin-left: auto; }
 .sidebar-logout i { margin-right: 6px; }
 
-/* ── TOAST / ALERT dengan icon ── */
 .toast i, .alert i { margin-right: 8px; }
 
-/* ── PAGINATION ── */
 .pager { display: flex; gap: 6px; flex-wrap: wrap; justify-content: center; }
 .pager-btn {
 min-width: 38px; height: 38px; padding: 0 12px; border-radius: 10px;
@@ -59,9 +48,6 @@ a.pager-btn:hover { border-color: var(--brown-500); background: var(--brown-100)
 .pager-btn.active { background: var(--brown-700); border-color: var(--brown-700); color: #fff; }
 .pager-btn.disabled { opacity: .45; cursor: not-allowed; }
 
-/* =====================================================
-LANDING PAGE
-===================================================== */
 .lp { background: var(--cream); }
 .lp-container { max-width: 1200px; margin: 0 auto; padding: 0 24px; }
 .lp-section { padding: 84px 0; }
@@ -74,7 +60,6 @@ color: var(--brown-900); line-height: 1.25; margin-bottom: 12px;
 }
 .lp-sub { color: var(--gray-500); font-size: 15px; }
 
-/* NAV */
 .lp-nav {
 position: sticky; top: 0; z-index: 200; height: 72px;
 background: rgba(28,15,8,.94); backdrop-filter: blur(10px);
@@ -100,7 +85,6 @@ transition: all .18s var(--ease);
 .lp-btn-gold:hover { background: #fff; transform: translateY(-1px); }
 .lp-burger { display: none; background: none; border: none; color: #fff; font-size: 22px; cursor: pointer; padding: 6px 8px; }
 
-/* CAROUSEL */
 .carousel { position: relative; overflow: hidden; background: var(--brown-900); }
 .carousel-track { display: flex; transition: transform .7s var(--ease); will-change: transform; }
 .slide {
@@ -173,7 +157,6 @@ background: rgba(255,255,255,.4); transition: all .3s;
 .car-dot.active { width: 32px; background: var(--brown-300); }
 .car-progress { position: absolute; left: 0; bottom: 0; height: 3px; background: var(--brown-300); width: 0; z-index: 5; }
 
-/* HIGHLIGHT STRIP */
 .strip { background: var(--white); border-bottom: 1px solid var(--gray-200); }
 .strip .lp-container { display: grid; grid-template-columns: repeat(4, 1fr); }
 .strip-item { display: flex; align-items: center; gap: 14px; padding: 22px 16px; }
@@ -182,7 +165,6 @@ background: rgba(255,255,255,.4); transition: all .3s;
 .strip-item strong { display: block; font-size: 14px; color: var(--brown-900); }
 .strip-item span { font-size: 12px; color: var(--gray-500); }
 
-/* KEUNGGULAN */
 .feat-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; }
 .feat {
 background: var(--cream); border: 1px solid var(--brown-100); border-radius: 16px; padding: 28px 22px;
@@ -197,7 +179,6 @@ background: linear-gradient(135deg, var(--brown-700), var(--brown-500)); color: 
 .feat h3 { font-size: 16px; color: var(--brown-900); margin-bottom: 8px; }
 .feat p { font-size: 14px; color: var(--gray-500); }
 
-/* PRODUK */
 .lp-tools { display: flex; align-items: center; justify-content: space-between; gap: 16px; flex-wrap: wrap; margin-bottom: 20px; }
 .lp-search { position: relative; }
 .lp-search i.fa-magnifying-glass { position: absolute; left: 14px; top: 50%; transform: translateY(-50%); color: var(--gray-500); font-size: 14px; }
@@ -215,7 +196,6 @@ position: absolute; top: 10px; left: 10px; font-size: 11px; font-weight: 700; pa
 .badge-stok { background: var(--yellow-100); color: var(--yellow-700); }
 .badge-habis { background: var(--red-100); color: var(--red-700); }
 
-/* CARA PESAN */
 .steps { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; counter-reset: s; position: relative; }
 .step-box { text-align: center; padding: 0 12px; position: relative; }
 .step-num {
@@ -234,7 +214,6 @@ border-top: 2px dashed var(--brown-300);
 .step-box h3 { font-size: 16px; color: var(--brown-900); margin-bottom: 6px; }
 .step-box p { font-size: 14px; color: var(--gray-500); }
 
-/* CTA */
 .cta {
 border-radius: 24px; padding: 56px 32px; text-align: center; color: #fff; position: relative; overflow: hidden;
 background: linear-gradient(120deg, #1C0F08, #3D1F0D 55%, #7B4D2A);
@@ -244,7 +223,6 @@ background: linear-gradient(120deg, #1C0F08, #3D1F0D 55%, #7B4D2A);
 .cta p { color: rgba(255,255,255,.75); margin-bottom: 26px; position: relative; }
 .cta .lp-btn { position: relative; padding: 13px 28px; font-size: 15px; }
 
-/* FOOTER */
 .lp-footer { background: var(--brown-900); color: rgba(255,255,255,.7); padding: 60px 0 0; }
 .lp-foot-grid { display: grid; grid-template-columns: 1.6fr 1fr 1.2fr; gap: 40px; padding-bottom: 40px; }
 .lp-footer .brand { color: var(--brown-300); font-size: 19px; margin-bottom: 14px; }
@@ -262,9 +240,6 @@ background: rgba(255,255,255,.08); transition: all .15s;
 .lp-social a:hover { background: var(--brown-300); color: var(--brown-900); }
 .lp-copy { border-top: 1px solid rgba(255,255,255,.1); padding: 20px 0; text-align: center; font-size: 13px; }
 
-/* =====================================================
-AUTH (LOGIN / REGISTER) — modern split screen
-===================================================== */
 .au-body { margin: 0; background: var(--cream); font-family: 'Plus Jakarta Sans', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif; }
 .au-shell { min-height: 100vh; display: grid; grid-template-columns: 1.05fr 1fr; }
 .au-side {
@@ -342,9 +317,6 @@ transition: all .18s var(--ease);
 .au-demo p { margin-bottom: 4px; }
 .au-demo code { background: var(--brown-100); padding: 1px 6px; border-radius: 5px; font-family: ui-monospace, monospace; }
 
-/* =====================================================
-RESPONSIVE
-===================================================== */
 @media (max-width: 1024px) {
 .feat-grid, .steps, .strip .lp-container, .lp .produk-grid { grid-template-columns: repeat(2, 1fr); }
 .strip-item:nth-child(3) { border-left: none; }

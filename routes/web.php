@@ -39,14 +39,12 @@ Route::middleware('guest')->group(function () {
     Route::get('/register',  [AuthController::class, 'showRegister'])->name('register');
     Route::post('/register', [AuthController::class, 'register'])->name('register.post');
 
-    // Masuk / daftar dengan Google (Gmail).
     Route::get('/auth/google',          [GoogleController::class, 'redirect'])->middleware('throttle:20,1')->name('google.redirect');
     Route::get('/auth/google/callback', [GoogleController::class, 'callback'])->name('google.callback');
 });
 
 Route::post('/midtrans/notifikasi', [MidtransController::class, 'notifikasi'])->name('midtrans.notifikasi');
 
-// Struk pembayaran: pelanggan (pesanan miliknya) & admin. Tetap bisa diakses saat toko tutup.
 Route::middleware('auth')->group(function () {
     Route::get('/struk/{pesanan}',     [StrukController::class, 'show'])->name('struk.show');
     Route::get('/struk/{pesanan}/pdf', [StrukController::class, 'pdf'])->name('struk.pdf');
@@ -58,7 +56,6 @@ Route::post('/logout', [AuthController::class, 'logout'])->name('logout')->middl
 Route::get('/toko-tutup', [TokoController::class, 'tutup'])->middleware('auth')->name('toko.tutup');
 
 Route::middleware(['auth', 'role:user'])->group(function () {
-    // Tetap bisa diakses saat toko tutup: akun, riwayat pesanan, status pembayaran, lihat/batalkan refund.
     Route::get('/profil',            [ProfilController::class, 'index'])->name('profil');
     Route::put('/profil',            [ProfilController::class, 'update'])->name('profil.update');
     Route::put('/profil/password',   [ProfilController::class, 'updatePassword'])->name('profil.password');
@@ -73,12 +70,10 @@ Route::middleware(['auth', 'role:user'])->group(function () {
     Route::get('/refund/{refund}',   [RefundController::class, 'show'])->name('refund.show');
     Route::delete('/refund/{refund}', [RefundController::class, 'batal'])->name('refund.batal');
 
-    // Ulasan produk (tetap bisa dipakai saat toko tutup).
     Route::post('/pesanan/{pesanan}/ulasan/{produk}', [UlasanController::class, 'store'])->middleware('throttle:20,1')->name('ulasan.store');
     Route::put('/ulasan/{ulasan}',                    [UlasanController::class, 'update'])->middleware('throttle:20,1')->name('ulasan.update');
     Route::delete('/ulasan/{ulasan}',                 [UlasanController::class, 'destroy'])->name('ulasan.destroy');
 
-    // Dibatasi saat toko tutup (middleware toko.buka mengarahkan ke halaman "Toko Tutup").
     Route::middleware('toko.buka')->group(function () {
         Route::get('/katalog',           [KatalogController::class, 'index'])->name('katalog');
         Route::get('/produk/{produk}',   [KatalogController::class, 'show'])->name('produk.show');
@@ -90,7 +85,6 @@ Route::middleware(['auth', 'role:user'])->group(function () {
 
         Route::post('/ongkir',           [OngkirController::class, 'hitung'])->middleware('throttle:30,1')->name('ongkir.hitung');
 
-        // Klik/geser pin di peta -> alamat otomatis, dan pencarian alamat (lewat server).
         Route::post('/alamat/reverse',   [AlamatController::class, 'reverse'])->middleware('throttle:60,1')->name('alamat.reverse');
         Route::post('/alamat/cari',      [AlamatController::class, 'cari'])->middleware('throttle:30,1')->name('alamat.cari');
 

@@ -1,4 +1,3 @@
-{{-- Tampilan bintang rating. Pakai: @include('partials.bintang', ['nilai' => 4.5, 'jumlah' => 12, 'kecil' => true]) --}}
 @php
     $nilai  = (float) ($nilai ?? 0);
     $kecil  = $kecil ?? false;

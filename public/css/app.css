@@ -828,7 +828,6 @@ textarea { resize: vertical; }
 }
 
 
-/* ===== Refund ===== */
 .badge-secondary { background: var(--gray-100); color: var(--gray-600); }
 
 .refund-reasons { display: grid; gap: 8px; margin-bottom: 18px; }
@@ -851,7 +850,6 @@ textarea { resize: vertical; }
 .refund-admin-note { margin-top: 12px; padding: 10px 12px; background: rgba(255, 255, 255, .7); border-radius: 8px; font-size: 13px; }
 
 
-/* ===== Buka / Tutup Toko ===== */
 .toko-banner {
   display: flex; align-items: center; justify-content: center; gap: 10px; flex-wrap: wrap;
   padding: 10px 20px; background: var(--red-700); color: var(--white); font-size: 14px; text-align: center;

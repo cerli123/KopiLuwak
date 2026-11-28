@@ -44,7 +44,6 @@ class UlasanController extends Controller
         return view('admin.ulasan.index', compact('ulasans', 'ringkas'));
     }
 
-    /** Tampilkan / sembunyikan ulasan dari halaman publik. */
     public function tampil(Ulasan $ulasan)
     {
         $ulasan->update(['tampil' => ! $ulasan->tampil]);
@@ -52,7 +51,6 @@ class UlasanController extends Controller
         return back()->with('success', $ulasan->tampil ? 'Ulasan ditampilkan.' : 'Ulasan disembunyikan.');
     }
 
-    /** Balas ulasan (kosongkan untuk menghapus balasan). */
     public function balas(Request $request, Ulasan $ulasan)
     {
         $data = $request->validateWithBag('balas_' . $ulasan->id, [

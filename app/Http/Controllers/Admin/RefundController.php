@@ -55,10 +55,6 @@ class RefundController extends Controller
         return view('admin.refund.show', compact('refund'));
     }
 
-    /**
-     * Setujui refund: pesanan dibatalkan, stok dikembalikan (bila belum dikirim),
-     * lalu dana dikembalikan otomatis (Midtrans) atau ditandai manual.
-     */
     public function setujui(Request $request, Refund $refund, MidtransService $midtrans)
     {
         $data = $request->validate([
@@ -80,9 +76,6 @@ class RefundController extends Controller
                     ->lockForUpdate()
                     ->firstOrFail();
 
-                // Pesanan yang belum dikirim: barang masih di gudang, jadi stok dikembalikan.
-                // Yang sudah dikirim/selesai: stok tidak otomatis kembali (barang mungkin rusak),
-                // admin bisa menyesuaikan lewat menu Stok bila barang kembali dalam kondisi baik.
                 if ($pesanan->status === 'diproses') {
                     foreach ($pesanan->detailPesanans as $detail) {
                         $detail->produk?->stok?->tambah($detail->qty);
@@ -104,7 +97,6 @@ class RefundController extends Controller
             return $this->gagal($request, $e->getMessage(), 409);
         }
 
-        // Pengembalian dana dilakukan di luar transaksi database (memanggil API eksternal).
         $refund->refresh();
         $hasil = $midtrans->prosesRefund($refund);
 
@@ -130,7 +122,6 @@ class RefundController extends Controller
         return redirect()->route('admin.refund.show', $refund)->with('success', $pesan);
     }
 
-    /** Tolak refund: alasan penolakan wajib diisi dan akan dilihat pelanggan. */
     public function tolak(Request $request, Refund $refund)
     {
         $data = $request->validate([
@@ -167,7 +158,6 @@ class RefundController extends Controller
         return redirect()->route('admin.refund.show', $refund)->with('success', 'Pengajuan refund ditolak. Alasan akan dilihat pelanggan.');
     }
 
-    /** Untuk refund manual: admin sudah mentransfer dana ke pelanggan. */
     public function selesai(Request $request, Refund $refund)
     {
         $data = $request->validate([

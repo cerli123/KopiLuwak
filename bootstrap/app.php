@@ -16,7 +16,6 @@ return Application::configure(basePath: dirname(__DIR__))
             'toko.buka' => \App\Http\Middleware\TokoBuka::class,
         ]);
 
-        // Di belakang tunnel / proxy HTTPS (Cloudflare, ngrok, hosting) Laravel harus percaya header X-Forwarded-Proto.
         $middleware->trustProxies(at: '*');
 
         $middleware->validateCsrfTokens(except: [

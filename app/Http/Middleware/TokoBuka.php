@@ -7,10 +7,6 @@ use Closure;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
 
-/**
- * Membatasi aktivitas pelanggan (belanja, checkout, pembayaran, dll.) saat toko ditutup admin.
- * Admin tidak terpengaruh.
- */
 class TokoBuka
 {
     public function handle(Request $request, Closure $next): Response

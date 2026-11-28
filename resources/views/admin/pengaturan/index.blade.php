@@ -322,7 +322,7 @@
                             alamatInput.value = d.display_name.substring(0, 250);
                         }
                     })
-                    .catch(function () { /* alamat boleh diisi manual */ });
+                    .catch(function () {  });
             }
 
             function setTitik(lat, lng, opsi) {
@@ -362,7 +362,6 @@
                 setTitik(e.latlng.lat, e.latlng.lng, { alamat: true });
             });
 
-            // Aktifkan lokasi perangkat (GPS / jaringan).
             btnLokasi.addEventListener('click', function () {
                 if (!window.isSecureContext) {
                     var lokal = 'http://localhost' + (location.port ? ':' + location.port : '') + location.pathname;
@@ -393,7 +392,6 @@
                 }, { enableHighAccuracy: true, timeout: 15000, maximumAge: 0 });
             });
 
-            // Cari alamat (OpenStreetMap Nominatim).
             document.getElementById('asal-cari').addEventListener('click', cari);
             document.getElementById('asal-query').addEventListener('keydown', function (e) {
                 if (e.key === 'Enter') { e.preventDefault(); cari(); }
@@ -419,7 +417,6 @@
                     });
             }
 
-            // Cegah simpan tanpa titik.
             document.getElementById('form-asal').addEventListener('submit', function (e) {
                 if (!latInput.value || !lngInput.value) {
                     e.preventDefault();

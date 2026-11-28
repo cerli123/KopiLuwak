@@ -1,4 +1,3 @@
-{{-- Bottom navigation HP untuk panel admin --}}
 @php
     $mBadgePesanan = $badgePesanan ?? \App\Models\Pesanan::where('status', 'menunggu_konfirmasi')->count();
     $mBadgeRefund  = $badgeRefund  ?? \App\Models\Refund::where('status', 'diajukan')->count();

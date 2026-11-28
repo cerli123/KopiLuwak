@@ -36,7 +36,6 @@ class ProfilController extends Controller
     {
         $user = $request->user();
 
-        // Akun yang dibuat lewat Google belum punya password: boleh membuatnya tanpa password lama.
         $perluPasswordLama = (bool) $user->punya_password;
 
         $request->validate([

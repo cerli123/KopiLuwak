@@ -7,27 +7,14 @@ use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
 
-/**
- * Pencarian alamat & "klik peta -> alamat" memakai OpenStreetMap Nominatim.
- * Dipanggil lewat server (bukan langsung dari browser) agar memenuhi aturan
- * penggunaan Nominatim (User-Agent jelas, hasil di-cache) dan tidak terblokir CORS / adblock.
- */
 class GeocodingService
 {
-    /** Tipe wilayah administrasi: bukan nama tempat, jangan ditampilkan sebagai "nama tempat". */
     private const BUKAN_TEMPAT = [
         'road', 'highway', 'neighbourhood', 'quarter', 'suburb', 'hamlet', 'village', 'city_district',
         'district', 'subdistrict', 'city', 'town', 'municipality', 'county', 'state_district', 'state',
         'region', 'postcode', 'country', 'island', 'administrative', 'locality',
     ];
 
-    /**
-     * Alamat dari koordinat.
-     *
-     * @return array{alamat: string, jalan: ?string, nama_tempat: ?string, sumber: string}|null  null = tidak ada alamat di titik itu
-     *
-     * @throws \RuntimeException bila layanan peta tidak bisa dihubungi
-     */
     public function reverse(float $lat, float $lng): ?array
     {
         $key = 'geo:rev:' . md5(round($lat, 5) . ',' . round($lng, 5));
@@ -48,7 +35,6 @@ class GeocodingService
         ]);
 
         if (! is_array($data) || isset($data['error']) || empty($data['address'] ?? $data['display_name'] ?? null)) {
-            // Titik di laut / tanpa data: simpan sebentar agar tidak dipanggil berulang.
             Cache::put($key, [], now()->addMinutes(10));
 
             return null;
@@ -60,13 +46,6 @@ class GeocodingService
         return $hasil;
     }
 
-    /**
-     * Cari alamat / nama tempat di Indonesia.
-     *
-     * @return array<int, array{lat: float, lng: float, alamat: string}>
-     *
-     * @throws \RuntimeException
-     */
     public function cari(string $kata): array
     {
         $key = 'geo:cari:' . md5(mb_strtolower(trim($kata)));
@@ -103,10 +82,6 @@ class GeocodingService
         return $hasil;
     }
 
-    /**
-     * Susun alamat yang rapi dalam urutan alamat Indonesia:
-     * nama tempat, jalan + nomor, RW/dusun, desa/kelurahan, kecamatan, kota/kabupaten, provinsi, kode pos.
-     */
     private function susun(array $d): array
     {
         $a = (array) ($d['address'] ?? []);
@@ -136,7 +111,6 @@ class GeocodingService
 
         $bagian = $this->unik($bagian);
 
-        // Data alamat kosong: pakai teks lengkap dari Nominatim (tanpa ", Indonesia").
         if (count($bagian) <= 1 && ! empty($d['display_name'])) {
             $bagian = $this->unik(array_map('trim', explode(',', (string) $d['display_name'])));
             $bagian = array_values(array_filter($bagian, fn ($b) => strcasecmp($b, 'Indonesia') !== 0));

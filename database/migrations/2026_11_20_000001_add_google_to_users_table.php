@@ -4,10 +4,6 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-/**
- * Login dengan Google: simpan ID akun Google, foto profil, dan penanda apakah
- * pengguna sudah punya password sendiri (akun yang dibuat lewat Google belum punya).
- */
 return new class extends Migration {
     public function up(): void
     {

@@ -16,14 +16,13 @@ return new class extends Migration {
             $table->foreignId('user_id')->constrained('users')->cascadeOnDelete();
             $table->foreignId('produk_id')->constrained('produks')->cascadeOnDelete();
             $table->foreignId('pesanan_id')->constrained('pesanans')->cascadeOnDelete();
-            $table->unsignedTinyInteger('rating');            // 1 - 5
+            $table->unsignedTinyInteger('rating');
             $table->text('komentar')->nullable();
-            $table->boolean('tampil')->default(true);          // admin bisa menyembunyikan
+            $table->boolean('tampil')->default(true);
             $table->text('balasan_admin')->nullable();
             $table->timestamp('dibalas_at')->nullable();
             $table->timestamps();
 
-            // Satu ulasan per produk per pesanan.
             $table->unique(['pesanan_id', 'produk_id']);
             $table->index(['produk_id', 'tampil']);
         });

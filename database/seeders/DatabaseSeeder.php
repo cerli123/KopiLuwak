@@ -13,8 +13,6 @@ class DatabaseSeeder extends Seeder
             KategoriSeeder::class,
             ProdukSeeder::class,
             BannerSeeder::class,
-            // Foto asli (galeri + banner + foto produk). Menggantikan GaleriSeeder contoh
-            // supaya galeri tidak berisi foto ganda. Aman dijalankan berulang kali.
             FotoKopiLuwakSeeder::class,
         ]);
     }

@@ -8,16 +8,10 @@ use Illuminate\Http\Request;
 
 class MidtransController extends Controller
 {
-    /**
-     * Webhook (HTTP Notification) Midtrans.
-     * Daftarkan URL berikut di Dashboard Midtrans > Settings > Configuration > Payment Notification URL:
-     *   https://DOMAIN-ANDA/midtrans/notifikasi
-     */
     public function notifikasi(Request $request, MidtransService $midtrans)
     {
         $serverKey = (string) config('toko.midtrans.server_key');
 
-        // Tanpa server key signature tidak bisa diverifikasi, jadi webhook ditolak.
         if ($serverKey === '') {
             return response()->json(['status' => 'server key belum diisi'], 503);
         }
@@ -38,7 +32,6 @@ class MidtransController extends Controller
         $pesanan = $orderId !== '' ? Pesanan::where('midtrans_order_id', $orderId)->first() : null;
 
         if (! $pesanan) {
-            // Contoh: tombol "Test notification" di dashboard Midtrans memakai order_id palsu.
             return response()->json(['status' => 'diabaikan']);
         }
 

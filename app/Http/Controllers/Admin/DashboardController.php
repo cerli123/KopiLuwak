@@ -13,7 +13,6 @@ class DashboardController extends Controller
         $menunggu        = Pesanan::whereIn('status', ['menunggu_bayar', 'menunggu_konfirmasi'])->count();
         $totalProduk     = Produk::count();
         $totalUser       = User::where('role', 'user')->count();
-        // Pembayaran yang sudah direfund tidak dihitung sebagai pendapatan.
         $pendapatanBulan = Pembayaran::where('status_bayar', 'dikonfirmasi')
             ->whereDoesntHave('pesanan.refund', fn($q) => $q->whereIn('status', ['disetujui', 'selesai']))
             ->whereMonth('created_at', now()->month)

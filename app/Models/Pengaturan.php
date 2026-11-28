@@ -31,7 +31,6 @@ class Pengaturan extends Model
         static::$logo = null;
     }
 
-    /** Toko dianggap BUKA kecuali admin menutupnya secara eksplisit. */
     public static function tokoBuka(): bool
     {
         return static::ambil('toko_buka', '1') !== '0';
@@ -64,7 +63,6 @@ class Pengaturan extends Model
         return static::$logo = asset('images/logo.svg');
     }
 
-    /** Tarif ongkir per km yang diatur admin; kosong = pakai nilai bawaan di config/.env. */
     public static function ongkirPerKm(): int
     {
         $nilai = static::ambil('ongkir_per_km');
@@ -76,10 +74,6 @@ class Pengaturan extends Model
         return max(0, (int) $nilai);
     }
 
-    /**
-     * Lokasi produksi / titik asal pengiriman.
-     * Memakai titik yang diatur admin; bila belum diatur, pakai nilai bawaan di config/toko.php (.env).
-     */
     public static function asal(): array
     {
         $cfg = config('toko.asal');
@@ -97,7 +91,6 @@ class Pengaturan extends Model
         ];
     }
 
-    /** Kontak toko yang diisi admin (kosong bila belum diisi). */
     public static function kontak(): array
     {
         $wa = preg_replace('/\D+/', '', (string) static::ambil('kontak_wa', ''));

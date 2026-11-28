@@ -1,6 +1,4 @@
-/* KOPILUWAK — Service Worker. Hanya menyimpan aset statis; halaman, login,
-   keranjang, pembayaran & admin SELALU diambil langsung dari server. */
-var VERSION = 'kopi-v2';
+var VERSION = 'kopi-v3';
 var STATIC = 'kopi-static-' + VERSION;
 var OFFLINE_URL = '/offline.html';
 var PRECACHE = [OFFLINE_URL, '/css/app.css', '/css/pro.css', '/css/mobile.css', '/js/app.js', '/js/mobile.js', '/icons/icon-192.png'];
@@ -24,13 +22,11 @@ self.addEventListener('fetch', function (e) {
   if (req.method !== 'GET') return;
   var url = new URL(req.url);
 
-  /* Navigasi halaman: jaringan dulu, gagal -> halaman offline */
   if (req.mode === 'navigate') {
     e.respondWith(fetch(req).catch(function () { return caches.match(OFFLINE_URL); }));
     return;
   }
 
-  /* Aset statis milik sendiri: cache dulu, perbarui di latar belakang */
   var own = url.origin === location.origin && /^\/(css|js|icons)\//.test(url.pathname);
   var cdn = CDN.indexOf(url.hostname) !== -1;
   if (own || cdn) {
@@ -44,5 +40,4 @@ self.addEventListener('fetch', function (e) {
       });
     }));
   }
-  /* selain itu (gambar produk, /media, midtrans, dsb) dibiarkan lewat jaringan */
 });

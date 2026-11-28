@@ -17,13 +17,8 @@ use Midtrans\Transaction;
 
 class MidtransService
 {
-    /**
-     * Metode pembayaran yang bisa direfund otomatis lewat API Midtrans.
-     * Metode lain (Virtual Account, Mandiri Bill, minimarket) harus ditransfer manual oleh admin.
-     */
     private const METODE_REFUND_OTOMATIS = ['credit_card', 'gopay', 'shopeepay', 'qris', 'akulaku', 'kredivo'];
 
-    /** Token Snap berlaku 24 jam; lewat dari ini token dianggap kedaluwarsa dan dibuat ulang. */
     public const TOKEN_KEDALUWARSA_JAM = 25;
 
     public function __construct()
@@ -33,10 +28,6 @@ class MidtransService
         Config::$isSanitized  = true;
         Config::$is3ds        = true;
 
-        // Library Midtrans tidak membawa sertifikat CA. Di Windows (XAMPP/Laragon) tanpa curl.cainfo,
-        // pembuatan token gagal dengan "cURL error 60: SSL certificate problem".
-        // CURLOPT_HTTPHEADER wajib berisi minimal satu header: library membuang header
-        // Authorization bila daftar header di Config::$curlOptions kosong.
         if (function_exists('curl_init')) {
             $opsi = [
                 CURLOPT_HTTPHEADER     => ['X-Client: kopiluwak-app'],
@@ -50,9 +41,6 @@ class MidtransService
         }
     }
 
-    /**
-     * Ubah error teknis Midtrans menjadi petunjuk yang bisa dipahami (untuk log & admin / mode debug).
-     */
     public static function pesanGalat(\Throwable $e): string
     {
         $m = $e->getMessage();
@@ -70,15 +58,11 @@ class MidtransService
         };
     }
 
-    /** sandbox | live */
     public function mode(): string
     {
         return config('toko.midtrans.is_production') ? 'live' : 'sandbox';
     }
 
-    /**
-     * Ringkasan konfigurasi untuk halaman Pengaturan admin.
-     */
     public function ringkasan(): array
     {
         $server = (string) config('toko.midtrans.server_key');
@@ -121,11 +105,6 @@ class MidtransService
         ];
     }
 
-    /**
-     * Uji Server Key ke Midtrans memakai order palsu: key valid => 404 (order tidak ada), key salah => 401.
-     *
-     * @return array{0: bool, 1: string}
-     */
     public function tesKoneksi(): array
     {
         $key = (string) config('toko.midtrans.server_key');
@@ -164,16 +143,12 @@ class MidtransService
             : 'https://app.sandbox.midtrans.com/snap/snap.js';
     }
 
-    /**
-     * Apakah token Snap pesanan ini perlu dibuat (belum ada / sudah kedaluwarsa).
-     */
     public function perluTokenBaru(Pesanan $pesanan): bool
     {
         if (! $pesanan->snap_token) {
             return true;
         }
 
-        // Token 'SIM-...' sisa dari versi lama (mode simulasi); tidak dikenal Midtrans.
         if (str_starts_with((string) $pesanan->snap_token, 'SIM-')) {
             return true;
         }
@@ -215,7 +190,6 @@ class MidtransService
             ];
         }
 
-        // gross_amount harus sama persis dengan jumlah item_details, kalau tidak Midtrans menolak.
         $gross = 0;
         foreach ($items as $item) {
             $gross += $item['price'] * $item['quantity'];
@@ -269,9 +243,6 @@ class MidtransService
         return $this->terapkan($pesanan, $data);
     }
 
-    /**
-     * Dipanggil oleh webhook Midtrans (signature sudah diverifikasi controller).
-     */
     public function tanganiNotifikasi(Pesanan $pesanan, array $payload): void
     {
         $status = $payload['transaction_status'] ?? null;
@@ -282,7 +253,6 @@ class MidtransService
             return;
         }
 
-        // Status pembayaran selalu diverifikasi ulang langsung ke Midtrans, bukan dari isi payload.
         $this->sinkron($pesanan);
     }
 
@@ -307,11 +277,6 @@ class MidtransService
         return $pesanan->refresh();
     }
 
-    /**
-     * Mengembalikan dana untuk refund yang sudah disetujui admin.
-     *
-     * @return array{berhasil: bool, metode: string, referensi: ?string, pesan: string}
-     */
     public function prosesRefund(Refund $refund): array
     {
         $refund->loadMissing('pesanan.pembayaran');
@@ -321,7 +286,6 @@ class MidtransService
         $tipe       = (string) ($pembayaran?->metode ?? '');
         $referensi  = (string) ($pembayaran?->referensi ?? '');
 
-        // Pembayaran lama hasil simulasi (referensi 'SIM-...') tidak punya transaksi nyata di Midtrans.
         if (str_starts_with($referensi, 'SIM-')) {
             return [
                 'berhasil'  => true,
@@ -373,9 +337,6 @@ class MidtransService
         ];
     }
 
-    /**
-     * Notifikasi refund dari Midtrans: tandai refund yang sudah disetujui menjadi selesai.
-     */
     private function terapkanNotifikasiRefund(Pesanan $pesanan, array $payload): void
     {
         DB::transaction(function () use ($pesanan, $payload) {

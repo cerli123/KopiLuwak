@@ -73,7 +73,6 @@ class ProdukController extends Controller
 
     public function destroy(Produk $produk)
     {
-        // Produk yang pernah dipesan tidak dihapus agar riwayat pesanan & laporan tetap utuh.
         if ($produk->detailPesanans()->exists()) {
             return back()->with('error', 'Produk ini pernah dipesan sehingga tidak bisa dihapus. Set stok ke 0 untuk menyembunyikannya dari penjualan.');
         }

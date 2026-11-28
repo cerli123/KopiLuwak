@@ -17,8 +17,10 @@
 
     @guest
         <div class="lp-topbar">
-            <i class="fa-solid fa-bag-shopping"></i>Ingin memesan? Login atau daftar gratis untuk mulai belanja.
-            <a href="{{ route('register') }}">Daftar Gratis</a>
+            <i class="fa-solid fa-bag-shopping"></i>
+            <span class="lp-topbar-long">Ingin memesan? Login atau daftar gratis untuk mulai belanja.</span>
+            <span class="lp-topbar-short">Mau belanja? Daftar gratis</span>
+            <a href="{{ route('register') }}">Daftar</a>
         </div>
     @endguest
 
@@ -170,7 +172,7 @@
         </div>
     </section>
 
-    <section class="lp-section" id="produk">
+    <section class="lp-section lp-produk" id="produk">
         <div class="lp-section-head">
             <p class="section-label"><i class="fa-solid fa-mug-hot"></i>Koleksi Pilihan</p>
             <h2 class="lp-section-title">Kopi Segar Lereng Muria</h2>
@@ -196,6 +198,11 @@
                 <a href="{{ route('landing') }}#produk" class="btn btn-outline">Lihat Semua Produk</a>
             </div>
         @else
+            @if ($produks->count() > 2)
+                <p class="rail-hint" aria-hidden="true">
+                    Geser untuk melihat produk lainnya <i class="fa-solid fa-arrow-right-long"></i>
+                </p>
+            @endif
             <div class="produk-grid">
                 @foreach ($produks as $produk)
                     <div class="produk-card">
@@ -311,25 +318,6 @@
             </div>
         </section>
     @endif
-
-    {{-- @guest
-        <section class="lp-cta">
-            <div class="lp-cta-box">
-                <div>
-                    <h2>Siap merasakan kopi dari lereng Muria?</h2>
-                    <p>Buat akun gratis, pilih kopi favorit Anda, dan selesaikan pesanan dalam hitungan menit.</p>
-                </div>
-                <div class="lp-cta-actions">
-                    <a href="{{ route('register') }}" class="btn btn-gold btn-lg">
-                        <i class="fa-solid fa-user-plus"></i>Daftar Sekarang
-                    </a>
-                    <a href="{{ route('login') }}" class="btn btn-light-outline btn-lg">
-                        <i class="fa-solid fa-right-to-bracket"></i>Masuk
-                    </a>
-                </div>
-            </div>
-        </section>
-    @endguest --}}
 
     @include('partials.footer')
     @include('partials.lightbox')

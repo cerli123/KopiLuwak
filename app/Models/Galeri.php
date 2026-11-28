@@ -15,16 +15,10 @@ class Galeri extends Model
         'urutan'   => 'integer',
     ];
 
-    /** Kategori bawaan yang disarankan di form admin. */
     public const KATEGORI = ['Produk', 'Proses', 'Kebun & Biji', 'Sentra Produksi', 'Kunjungan'];
 
     protected static ?bool $siapDetail = null;
 
-    /**
-     * Apakah kolom detail galeri (deskripsi, kategori, urutan, unggulan) sudah ada di database.
-     * Bila migrasi `php artisan migrate` belum dijalankan, halaman tetap tampil (tanpa error SQL)
-     * dan hanya fitur detail yang belum aktif.
-     */
     public static function siapDetail(): bool
     {
         if (static::$siapDetail === null) {
@@ -40,7 +34,6 @@ class Galeri extends Model
         return static::$siapDetail;
     }
 
-    /** Urutan tampil: nomor urut kecil dulu, lalu yang terbaru. */
     public function scopeUrut($query)
     {
         if (! static::siapDetail()) {

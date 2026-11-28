@@ -7,7 +7,6 @@ use App\Models\Pengaturan;
 
 class TokoController extends Controller
 {
-    /** Halaman yang dilihat pelanggan saat toko tutup. */
     public function tutup()
     {
         if (auth()->user()->role === 'admin') {

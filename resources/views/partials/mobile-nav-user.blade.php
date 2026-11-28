@@ -1,4 +1,3 @@
-{{-- Bottom navigation HP untuk tamu & pelanggan. Admin otomatis memakai menu admin. --}}
 @if (auth()->check() && auth()->user()->role === 'admin')
     @include('partials.mobile-nav-admin')
 @else

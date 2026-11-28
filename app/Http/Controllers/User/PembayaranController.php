@@ -21,7 +21,6 @@ class PembayaranController extends Controller
             return redirect()->route('pesanan.show', $pesanan);
         }
 
-        // Token Snap dibuat bila belum ada, atau sudah kedaluwarsa (lewat 24 jam).
         if ($midtrans->perluTokenBaru($pesanan)) {
             try {
                 $midtrans->buatSnapToken($pesanan);
@@ -42,9 +41,6 @@ class PembayaranController extends Controller
         ]);
     }
 
-    /**
-     * JSON: status pesanan & pembayaran terkini (disinkronkan ke Midtrans).
-     */
     public function status(Pesanan $pesanan, MidtransService $midtrans): JsonResponse
     {
         abort_if($pesanan->user_id !== Auth::id(), 403);
@@ -68,9 +64,6 @@ class PembayaranController extends Controller
         ]);
     }
 
-    /**
-     * JSON: token Snap untuk pesanan (dibuat baru hanya bila belum ada / kedaluwarsa).
-     */
     public function token(Pesanan $pesanan, MidtransService $midtrans): JsonResponse
     {
         abort_if($pesanan->user_id !== Auth::id(), 403);

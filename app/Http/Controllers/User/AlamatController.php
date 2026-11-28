@@ -9,7 +9,6 @@ use Illuminate\Http\Request;
 
 class AlamatController extends Controller
 {
-    /** Titik peta -> alamat (nama jalan, desa, kecamatan, kota, dst). */
     public function reverse(Request $request, GeocodingService $geo): JsonResponse
     {
         $data = $request->validate([
@@ -30,7 +29,6 @@ class AlamatController extends Controller
         return response()->json($hasil);
     }
 
-    /** Kata kunci -> koordinat + alamat (hasil pertama yang paling cocok). */
     public function cari(Request $request, GeocodingService $geo): JsonResponse
     {
         $data = $request->validate(['q' => 'required|string|min:3|max:150']);

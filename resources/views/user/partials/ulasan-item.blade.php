@@ -1,4 +1,3 @@
-{{-- Satu kartu ulasan. Variabel: $u (Ulasan), $bolehUbah (bool) --}}
 @php $bolehUbah = $bolehUbah ?? false; @endphp
 <article class="ulasan-item">
     <div class="ulasan-head">

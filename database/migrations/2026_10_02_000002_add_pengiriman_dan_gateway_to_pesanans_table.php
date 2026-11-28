@@ -7,8 +7,6 @@ use Illuminate\Support\Facades\Schema;
 return new class extends Migration {
     public function up(): void
     {
-        // Setiap kolom dicek dulu supaya migrasi aman dijalankan ulang
-        // walau sebagian kolom sudah ada di database.
         Schema::table('pesanans', function (Blueprint $table) {
             if (! Schema::hasColumn('pesanans', 'lat')) {
                 $table->decimal('lat', 10, 7)->nullable()->after('no_hp_penerima');

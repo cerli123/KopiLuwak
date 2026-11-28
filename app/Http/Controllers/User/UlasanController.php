@@ -11,7 +11,6 @@ use Illuminate\Support\Facades\Auth;
 
 class UlasanController extends Controller
 {
-    /** Beri ulasan untuk satu produk dalam satu pesanan milik pelanggan. */
     public function store(Request $request, Pesanan $pesanan, Produk $produk)
     {
         abort_if($pesanan->user_id !== Auth::id(), 403);
@@ -44,7 +43,6 @@ class UlasanController extends Controller
         return back()->with('success', $pesan);
     }
 
-    /** Ubah ulasan milik sendiri. */
     public function update(Request $request, Ulasan $ulasan)
     {
         abort_if($ulasan->user_id !== Auth::id(), 403);
@@ -59,7 +57,6 @@ class UlasanController extends Controller
         return back()->with('success', 'Ulasan Anda diperbarui.');
     }
 
-    /** Hapus ulasan milik sendiri. */
     public function destroy(Ulasan $ulasan)
     {
         abort_if($ulasan->user_id !== Auth::id(), 403);

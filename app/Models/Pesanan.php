@@ -54,7 +54,6 @@ class Pesanan extends Model
         return $this->hasMany(Ulasan::class);
     }
 
-    /** Pesanan ini sudah boleh diulas (status sesuai config/toko.php > ulasan.status_boleh). */
     public function bisaDiulas(): bool
     {
         return in_array($this->status, config('toko.ulasan.status_boleh', ['selesai']), true);
@@ -66,10 +65,6 @@ class Pesanan extends Model
         return 'KLM-' . date('Y') . '-' . str_pad($last + 1, 4, '0', STR_PAD_LEFT);
     }
 
-    /**
-     * Mengembalikan pesan alasan bila pesanan TIDAK bisa diajukan refund,
-     * atau null bila boleh diajukan.
-     */
     public function alasanTidakBisaRefund(): ?string
     {
         if ($this->refund) {

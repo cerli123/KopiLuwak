@@ -39,7 +39,6 @@ class Ulasan extends Model
         return $query->where('tampil', true);
     }
 
-    /** Nama yang ditampilkan publik: "Budi S." (tidak membuka nama lengkap). */
     public function getNamaTampilAttribute(): string
     {
         $bagian = preg_split('/\s+/', trim((string) $this->user?->nama)) ?: [];

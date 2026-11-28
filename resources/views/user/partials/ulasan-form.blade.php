@@ -1,10 +1,6 @@
-{{--
-    Form tulis / ubah ulasan.
-    Variabel: $action, $method ('POST' | 'PUT'), $key (unik), $ulasan (opsional), $tombol (opsional)
---}}
 @php
     $bag     = $errors->getBag($key);
-    $aktif   = old('_form') === $key;                      // old() hanya dipakai pada form yang baru dikirim
+    $aktif   = old('_form') === $key;
     $nilai   = $aktif ? (int) old('rating') : (int) ($ulasan->rating ?? 0);
     $isi     = $aktif ? old('komentar') : ($ulasan->komentar ?? '');
     $maks    = (int) config('toko.ulasan.maks_karakter', 1000);

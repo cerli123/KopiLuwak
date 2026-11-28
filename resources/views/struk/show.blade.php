@@ -196,7 +196,6 @@
     </div>
     @if (request()->boolean('cetak'))
         <script>
-            // Dibuka dari tombol "Cetak Struk" setelah pembayaran: langsung tampilkan dialog cetak.
             window.addEventListener('load', function () { setTimeout(function () { window.print(); }, 400); });
         </script>
     @endif

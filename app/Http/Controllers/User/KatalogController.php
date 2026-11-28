@@ -26,7 +26,6 @@ class KatalogController extends Controller
         $kategoris = Kategori::all();
         $banners   = Banner::aktif()->get();
 
-        // Galeri sekilas (foto unggulan) dan peta nama-file => path untuk bagian Tentang/Proses.
         $galeriUnggulan = Galeri::siapDetail()
             ? Galeri::where('unggulan', true)->urut()->take(6)->get()
             : collect();
@@ -65,7 +64,6 @@ class KatalogController extends Controller
 
         $userId = Auth::id();
 
-        // Ringkasan rating: jumlah per bintang (hanya ulasan yang tampil).
         $perBintang = Ulasan::tampil()
             ->where('produk_id', $produk->id)
             ->selectRaw('rating, COUNT(*) as total')
@@ -77,7 +75,6 @@ class KatalogController extends Controller
             ? round($perBintang->map(fn ($total, $rating) => $total * $rating)->sum() / $jumlahUlasan, 1)
             : 0.0;
 
-        // Daftar ulasan: yang tampil + milik pengguna sendiri (agar ia melihat ulasan yang menunggu persetujuan).
         $ulasans = Ulasan::with('user')
             ->where('produk_id', $produk->id)
             ->where(fn ($q) => $q->where('tampil', true)->orWhere('user_id', $userId))
@@ -86,7 +83,6 @@ class KatalogController extends Controller
             ->withQueryString()
             ->fragment('ulasan');
 
-        // Pesanan selesai milik pengguna yang memuat produk ini dan belum diulas -> boleh menulis ulasan.
         $pesananBisaUlas = Pesanan::where('user_id', $userId)
             ->whereIn('status', config('toko.ulasan.status_boleh', ['selesai']))
             ->whereHas('detailPesanans', fn ($q) => $q->where('produk_id', $produk->id))

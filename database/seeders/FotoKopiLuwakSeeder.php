@@ -9,14 +9,6 @@ use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Storage;
 
-/**
- * Memasukkan 14 foto asli Sentral Produsen Kopi Luwak Lereng Muria:
- *  - Galeri  : semua foto + judul, deskripsi, kategori, urutan, dan penanda "unggulan"
- *  - Banner  : 3 foto lebar untuk carousel landing page
- *  - Produk  : foto kemasan & biji untuk produk Kopi Luwak
- *
- * Aman dijalankan berulang kali:  php artisan db:seed --class=FotoKopiLuwakSeeder
- */
 class FotoKopiLuwakSeeder extends Seeder
 {
     public function run(): void
@@ -44,7 +36,6 @@ class FotoKopiLuwakSeeder extends Seeder
 
     private function galeri(): void
     {
-        // [file, judul, kategori, unggulan, deskripsi]
         $data = [
             ['03-kaleng-lereng-muria.jpg', 'Kopi Luwak Lereng Muria dalam Kaleng Eksklusif', 'Produk', true,
                 'Kemasan kaleng hitam berhias emas yang menjaga aroma dan kesegaran kopi luwak Lereng Muria, siap dikirim atau dijadikan hadiah.'],
@@ -95,7 +86,6 @@ class FotoKopiLuwakSeeder extends Seeder
 
     private function banner(): void
     {
-        // Nonaktifkan banner contoh bawaan agar yang tampil hanya foto asli.
         Banner::whereIn('gambar', [
             'banner/banner-sunrise-muria.jpg',
             'banner/banner-luwak-premium.jpg',

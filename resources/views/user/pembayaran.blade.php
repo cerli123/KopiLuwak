@@ -20,7 +20,6 @@
                 pesanEl.style.display = teks ? 'block' : 'none';
             }
 
-            // Selalu minta token terbaru ke server (dibuat ulang otomatis bila kedaluwarsa).
             function ambilToken() {
                 return fetch(urlToken, {
                     method: 'POST',
@@ -45,7 +44,7 @@
                 info('Menyiapkan pembayaran...', false);
 
                 ambilToken().catch(function (err) {
-                    if (tokenAwal) return tokenAwal;   // cadangan: token yang sudah ada
+                    if (tokenAwal) return tokenAwal;
                     throw err;
                 }).then(function (token) {
                     info('', false);

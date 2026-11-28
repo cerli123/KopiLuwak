@@ -23,7 +23,6 @@ class LaporanController extends Controller
         $totalPesanan    = $pesanans->count();
         $rataRata        = $totalPesanan > 0 ? $totalPendapatan / $totalPesanan : 0;
 
-        // Chart per minggu dalam range
         $chartData = $pesanans->groupBy(fn($p) => $p->created_at->format('Y-W'))
             ->map(fn($g) => $g->sum('total_harga'))->take(8);
 
